@@ -1,10 +1,14 @@
 import { ContactItem } from 'components/ContactItem/ContactItem';
 
-export const ContactList = () => {
+export const ContactList = ({ contacts }) => {
   return (
     <>
       <ul>
-        <ContactItem />
+        {contacts.map(contact => (
+          <li>
+            <ContactItem />
+          </li>
+        ))}
       </ul>
     </>
   );
