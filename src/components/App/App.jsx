@@ -24,16 +24,15 @@ export class App extends Component {
   };
 
   render() {
+    const { contacts } = this.state;
+
     return (
       <div>
         <h1>Phonebook</h1>
         <ContactForm onSubmit={this.addContact} />
         <h2>Contact</h2>
         <Filter />
-        <ContactList
-          contacts={this.state.contacts}
-          onDelete={this.deleteContact}
-        />
+        <ContactList contacts={contacts} onDelete={this.deleteContact} />
       </div>
     );
   }
