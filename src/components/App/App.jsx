@@ -8,11 +8,14 @@ import initialContacts from '../data/contacts.json';
 export class App extends Component {
   state = {
     contacts: initialContacts,
+    filter: '',
   };
 
-  addContact = (name, number) => {
+  addContact = ({ name, number }) => {
+    console.log(name, number);
+    const contact = { id: nanoid(), name, number };
     this.setState(prevState => ({
-      contacts: [...prevState.contacts, { id: nanoid(), name, number }],
+      contacts: [...prevState.contacts, contact],
     }));
   };
 
@@ -23,16 +26,32 @@ export class App extends Component {
     }));
   };
 
+  changeFilter = event => {
+    this.setState({ filter: event.currentTarget.value });
+  };
+
+  getVisibleContacts = () => {
+    const { filter, contacts } = this.state;
+
+    const normalizedFilter = filter.toLowerCase();
+
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(normalizedFilter)
+    );
+  };
+
   render() {
-    const { contacts } = this.state;
+    const { filter } = this.state;
+
+    const visibleContacts = this.getVisibleContacts();
 
     return (
       <div>
         <h1>Phonebook</h1>
         <ContactForm onSubmit={this.addContact} />
         <h2>Contact</h2>
-        <Filter />
-        <ContactList contacts={contacts} onDelete={this.deleteContact} />
+        <Filter value={filter} onChange={this.changeFilter} />
+        <ContactList contacts={visibleContacts} onDelete={this.deleteContact} />
       </div>
     );
   }
